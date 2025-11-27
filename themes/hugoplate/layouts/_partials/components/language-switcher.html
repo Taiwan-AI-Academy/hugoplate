@@ -13,23 +13,35 @@
   {{ $pageTranslations.Set .Language.Lang .Permalink }}
 {{ end }}
 
-<select class="{{ $class }}" onchange="location = this.value">
-  {{ range site.Languages }}
-    {{/* Fill the dropdown with all known languages */}}
-    {{ $link := $pageTranslations.Get .Lang }}
-    {{ if $link }}
-      <option
-        id="{{ .Lang }}"
-        value="{{ $link }}"
-      {{ if eq .Lang $pageLang }}
-        selected
+<div class="relative inline-flex items-center text-text-dark dark:text-white {{ $class }}">
+  <i class="fa-solid fa-earth-americas mr-2 text-base"></i>
+  <div class="relative">
+    <select
+      class="appearance-none cursor-pointer rounded border border-border bg-white pl-3 pr-8 py-1 text-sm dark:border-darkmode-border dark:bg-darkmode-light focus:outline-none focus:ring-2 focus:ring-primary transition"
+      onchange="location = this.value">
+      {{ range site.Languages }}
+        {{/* Fill the dropdown with all known languages */}}
+        {{ $link := $pageTranslations.Get .Lang }}
+        {{ if $link }}
+          <option
+            id="{{ .Lang }}"
+            value="{{ $link }}"
+          {{ if eq .Lang $pageLang }}
+            selected
+          {{ end }}
+            >
+            {{ .LanguageName }}
+          </option>
+        {{ else }}
+          {{/* if we can't safely redirect the user to the translated page or at least to translated home, discard the language from options */}}
+        {{ end }}
       {{ end }}
-        >
-        {{ .LanguageName }}
-      </option>
-    {{ else }}
-      {{/* if we can't safely redirect the user to the translated page or at least to translated home, discard the language from options */}}
-    {{ end }}
-  {{ end }}
-</select>
+    </select>
+    <span class="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-xs text-text-light dark:text-darkmode-text">
+      <svg class="h-3 w-3" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+        <path d="M5.23 7.21a.75.75 0 0 1 1.06.02L10 10.94l3.71-3.71a.75.75 0 1 1 1.06 1.06l-4.24 4.24a.75.75 0 0 1-1.06 0L5.21 8.29a.75.75 0 0 1 .02-1.08z" />
+      </svg>
+    </span>
+  </div>
+</div>
 {{ end }}

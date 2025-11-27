@@ -4,3 +4,11 @@ languageName = "En"
 languageCode = "en-us"
 contentDir = "content/english"
 weight = 1
+
+################ Traditional Chinese language ##################
+[zh-hant]
+languageName = "繁體中文"
+languageCode = "zh-tw"
+contentDir = "content/zh-hant"
+weight = 2
+

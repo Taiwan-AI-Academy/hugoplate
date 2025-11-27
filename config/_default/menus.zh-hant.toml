@@ -1,0 +1,38 @@
+############# Traditional Chinese navigation ##############
+
+# main menu
+[[main]]
+name = "首頁"
+url = "/"
+weight = 1
+
+[[main]]
+name = "關於我們"
+url = "/about"
+weight = 2
+
+[[main]]
+name = "文章"
+url = "/posts"
+weight = 3
+
+[[main]]
+name = "聯絡"
+url = "/contact"
+weight = 4
+
+# footer menu
+[[footer]]
+name = "關於我們"
+url = "/about"
+weight = 1
+
+[[footer]]
+name = "文章"
+url = "/posts"
+weight = 2
+
+[[footer]]
+name = "隱私權政策"
+url = "/privacy-policy"
+weight = 3
