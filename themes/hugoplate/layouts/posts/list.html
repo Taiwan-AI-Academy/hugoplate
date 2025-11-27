@@ -1,0 +1,105 @@
+{{ define "main" }}
+  {{ partial "page-header" . }}
+
+  {{ $pageSize := 4 }}
+  {{ $paginator := .Paginate .RegularPages $pageSize }}
+
+  <section class="section">
+    <div class="container">
+      <div class="row justify-center">
+        <div class="lg:col-10">
+          <div
+            id="posts-grid"
+            class="row"
+            {{ if $paginator.HasNext }}data-next="{{ $paginator.Next.URL }}"{{ end }}>
+            {{ range $paginator.Pages }}
+              <div class="md:col-6 mb-14 post-card">
+                {{ partial "components/blog-card" . }}
+              </div>
+            {{ end }}
+          </div>
+
+          {{ if $paginator.HasNext }}
+            <div class="mt-6 flex justify-center">
+              <button
+                id="posts-load-more"
+                class="btn btn-outline-primary"
+                type="button"
+                data-next="{{ $paginator.Next.URL }}">Load more</button>
+            </div>
+          {{ end }}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    (() => {
+      const grid = document.getElementById('posts-grid');
+      const loadMoreBtn = document.getElementById('posts-load-more');
+      if (!grid || !loadMoreBtn) return;
+
+      let loading = false;
+      let observer;
+
+      const updateButtonState = (nextUrl) => {
+        if (nextUrl) {
+          loadMoreBtn.dataset.next = nextUrl;
+          loadMoreBtn.disabled = false;
+          loadMoreBtn.classList.remove('opacity-60', 'cursor-not-allowed');
+          loadMoreBtn.textContent = 'Load more';
+          return;
+        }
+
+        loadMoreBtn.remove();
+        if (observer) observer.disconnect();
+      };
+
+      const fetchNextPage = async () => {
+        if (loading) return;
+
+        const nextUrl = loadMoreBtn.dataset.next;
+        if (!nextUrl) return;
+
+        loading = true;
+        loadMoreBtn.textContent = 'Loading...';
+        loadMoreBtn.disabled = true;
+        loadMoreBtn.classList.add('opacity-60', 'cursor-not-allowed');
+
+        try {
+          const response = await fetch(nextUrl);
+          if (!response.ok) throw new Error('Failed to load more posts');
+
+          const html = await response.text();
+          const doc = new DOMParser().parseFromString(html, 'text/html');
+          const newCards = doc.querySelectorAll('#posts-grid .post-card');
+          newCards.forEach((card) => grid.appendChild(card));
+
+          const nextButton = doc.getElementById('posts-load-more');
+          updateButtonState(nextButton?.dataset.next);
+        } catch (error) {
+          console.error(error);
+          loadMoreBtn.textContent = 'Retry loading';
+          loadMoreBtn.disabled = false;
+          loadMoreBtn.classList.remove('opacity-60', 'cursor-not-allowed');
+        } finally {
+          loading = false;
+        }
+      };
+
+      observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              fetchNextPage();
+            }
+          });
+        },
+        { rootMargin: '200px' }
+      );
+
+      observer.observe(loadMoreBtn);
+      loadMoreBtn.addEventListener('click', fetchNextPage);
+    })();
+  </script>
+{{ end }}
