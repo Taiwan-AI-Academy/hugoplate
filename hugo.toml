@@ -2,7 +2,7 @@
 # The base URL of your site (required). This will be prepended to all relative URLs.
 baseURL = "https://taiwan-ai-academy.github.io"
 # Title of your website (required).
-title = "Hugoplate"
+title = "2026 AIA台灣人工智慧學校分享平台"
 # Your theme name
 theme = "hugoplate"
 # Default time zone for time stamps; use any valid tz database name: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List
