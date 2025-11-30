@@ -21,6 +21,21 @@ name = "聯絡"
 url = "/contact"
 weight = 4
 
+[[main]]
+name = "初階班"
+url = "/beginner-class"
+weight = 5
+
+[[main]]
+name = "中階班"
+url = "/intermediate-class"
+weight = 6
+
+[[main]]
+name = "高階班"
+url = "/advanced-class"
+weight = 7
+
 # footer menu
 [[footer]]
 name = "關於我們"
